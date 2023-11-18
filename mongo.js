@@ -11,6 +11,8 @@ const newSchema=new mongoose.Schema({
     email:String,
     contact:Number,
     country:String,
+    gender:String,
+    idnumber:String,
     password:String,
     confpwd:String
 })
