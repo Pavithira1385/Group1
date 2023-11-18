@@ -21,12 +21,14 @@ app.get("/",async(req,res)=>{
   }
 })
 app.post("/",async(req,res)=>{
-const {name,email,contact,country,password,confpwd}=req.body
+const {name,email,contact,country,gender,idnumber,password,confpwd}=req.body
 const data={
   name:name,
   email:email,
   contact:contact,
   country:country,
+  gender:gender,
+  idnumber:idnumber,
   password:password,
   confpwd:confpwd
 }
