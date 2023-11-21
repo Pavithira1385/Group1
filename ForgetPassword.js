@@ -1,91 +1,61 @@
-import React from 'react'
+import React from 'react';
+import axios from 'axios';
 
-import { useState } from "react";
+function PasswordReset() {
+  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState('');
 
-import { Link, useNavigate } from "react-router-dom";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-import axios from 'axios'
-
-function ForgotPassword() {
-
-    const [email, setEmail] = useState()
-
-    const navigate = useNavigate()
-
-    axios.defaults.withCredentials = true;
-
-    const handleSubmit = (e) => {
-
-        e.preventDefault()
-
-        axios.post('http://localhost:3001/forgot-password', {email})
-
-        .then(res => {
-
-            if(res.data.Status === "Success") {
-
-                navigate('/login')
-
-               
-
-            }
-
-        }).catch(err => console.log(err))
-
+    try {
+      await axios.post('/api/password-reset', { email });
+      alert('Password reset instructions have been sent to your email.');
+      setEmail('');
+    } catch (err) {
+      setError(err.message);
     }
+  };
 
-    return(
-
-        <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
-
-      <div className="bg-white p-3 rounded w-25">
-
-        <h4>Forgot Password</h4>
-
-        <form onSubmit={handleSubmit}>
-
-          <div className="mb-3">
-
-            <label htmlFor="email">
-
-              <strong>Email</strong>
-
-            </label>
-
-            <input
-
-              type="email"
-
-              placeholder="Enter Email"
-
-              autoComplete="off"
-
-              name="email"
-
-              className="form-control rounded-0"
-
-              onChange={(e) => setEmail(e.target.value)}
-
-            />
-
-          </div>
-
-          <button type="submit" className="btn btn-success w-100 rounded-0">
-
-            Send
-
-          </button>
-
-          </form>
-
-        
-
+  return (
+    <div className="card text-center" style={{ width: '300px' }}>
+      <div className="card-header h5 text-white bg-primary">Password Reset</div>
+      <div className="card-body px-5">
+        <p className="card-text py-2">
+          Enter your email address and we'll send you an email with instructions
+          to reset your password.
+        </p>
+        <div className="form-outline">
+          <input
+            type="email"
+            id="typeEmail"
+            className="form-control my-3"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label className="form-label" htmlFor="typeEmail">
+            Email input
+          </label>
+        </div>
+        <button
+          className="btn btn-primary w-100"
+          onClick={handleSubmit}
+          disabled={!email}
+        >
+          Reset password
+        </button>
+        <div className="d-flex justify-content-between mt-4">
+          <a className="" href="#">
+            Login
+          </a>
+          <a className="" href="#">
+            Register
+          </a>
+        </div>
+        {error && <p className="text-danger">{error}</p>}
       </div>
-
     </div>
-
-    )
-
+  );
 }
 
-export default ForgotPassword;
+export default PasswordReset;
